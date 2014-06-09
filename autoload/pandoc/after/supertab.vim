@@ -12,9 +12,14 @@ function! pandoc#after#supertab#Init()
 	" disable supertab completions after bullets and numbered list
 	" items (since one commonly types something like `+<tab>` to
 	" create a list.)
-	let b:SuperTabNoCompleteAfter = ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\.\=\|)\=\)']
-    endif
-endfunction
+	" retains global disable patterns
+	let b:SuperTabNoCompleteAfter = g:SuperTabNoCompleteAfter +
+		\ ['\s', '^\s*\(-\|\*\|+\|>\|:\)', '^\s*(\=\d\+\(\.\=\|)\=\)']
+
+	" remove any duplicates
+	call sort(b:SuperTabNoCompleteAfter)
+	call uniq(b:SuperTabNoCompleteAfter)
+endif
 
 function! pandoc#after#supertab#Context()
     return "\<c-x>\<c-o>"
