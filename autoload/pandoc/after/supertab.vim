@@ -3,10 +3,14 @@ function! pandoc#after#supertab#Init()
 	call SuperTabSetDefaultCompletionType("context")
 
 	if exists('g:SuperTabCompletionContexts')
-	    if exists('g:pandoc#modules#enabled') && index(g:pandoc#modules#enabled, "completion") != -1
-		let b:SuperTabCompletionContexts =
-			    \ ['pandoc#after#supertab#Context'] + g:SuperTabCompletionContexts
-	    endif
+		if exists('g:pantondoc_enabled_modules') ||
+				\ index(g:pandoc#modules#enabled, 'completion') >= 0
+			let b:SuperTabCompletionContexts =
+				\ ['pantondoc#completion#Context'] + g:SuperTabCompletionContexts
+		elseif exists('g:pandoc#PandocContext')
+			let b:SuperTabCompletionContexts =
+				\ ['pandoc#PandocContext'] + g:SuperTabCompletionContexts
+		endif
 	endif
 
 	" disable supertab completions after bullets and numbered list
